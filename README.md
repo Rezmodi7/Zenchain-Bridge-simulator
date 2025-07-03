@@ -1,7 +1,6 @@
 # Zenchain-Bridge-simulator
 Explore a static, multi-language UI for a ZenChain Token Bridge. This project demonstrates front-end concepts for blockchain interactions, including wallet simulation and diverse transfer methods.
 
-# Bridge-Simulator-Zenchain
 ## **ZenChain Token Bridge UI**
 
 A simulated user interface for a token bridge, demonstrating multi-chain asset transfer concepts with a focus on user experience and localization.
