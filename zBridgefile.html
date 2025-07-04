@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZenChain Bridge</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid #a5d6a7;
+    }
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    h2 {
+      color: #004d40;
+      margin: 0;
+    }
+    .language-selector {
+      display: flex;
+      align-items: center;
+    }
+    .language-selector label {
+      margin-right: 6px;
+      font-size: 0.9em;
+    }
+    .language-selector select {
+      padding: 4px 6px;
+      font-size: 0.85em;
+    }
+    .language-selector option {
+      padding-left: 24px;
+      background-repeat: no-repeat;
+      background-size: 16px 12px;
+      background-position: left center;
+    }
+    .wallet-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #a5d6a7;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #004d40;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #a5d6a7;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .action-button {
+      background-color: #004d40;
+      color: white;
+      margin-top: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .action-button:hover {
+      background-color: #00332c;
+    }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #004d40;
+    }
+    .desc {
+      font-size: 0.8em;
+      color: #666;
+      margin: 3px 0 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-section">
+      <h2 data-key="title">ZenChain Bridge</h2>
+      <div class="language-selector">
+        <label for="lang">🌐</label>
+        <select id="lang">
+          <option value="en" style="background-image: url('https://flagcdn.com/w20/gb.png');">EN</option>
+          <option value="fa" style="background-image: url('https://flagcdn.com/w20/ir.png');">FA</option>
+          <option value="ar" style="background-image: url('https://flagcdn.com/w20/sa.png');">AR</option>
+          <option value="zh" style="background-image: url('https://flagcdn.com/w20/cn.png');">ZH</option>
+        </select>
+      </div>
+    </div><div class="wallet-section">
+  <span id="walletStatus" data-key="walletNotConnected">Wallet Not Connected</span>
+  <button id="connectWallet" data-key="connect">Connect Wallet</button>
+</div>
+
+<label for="from" data-key="from">From Chain:</label>
+<select id="from">
+  <option>Ethereum</option>
+  <option>Bitcoin</option>
+  <option>Polygon</option>
+</select>
+
+<label for="to" data-key="to">To Chain:</label>
+<select id="to">
+  <option>ZenChain</option>
+  <option>Other Network</option>
+</select>
+
+<label for="amount" data-key="amount">Amount (ZTC):</label>
+<input type="number" id="amount" placeholder="Enter amount" />
+
+<label data-key="method">Transfer Method:</label>
+<label><input type="radio" name="method" value="standard" checked /> <span data-key="standard">Standard Transfer</span></label>
+<div class="desc" data-key="standardDesc">Estimated: 5-10 mins, Standard Fee</div>
+<label><input type="radio" name="method" value="fast" /> <span data-key="fast">Fast Transfer</span></label>
+<div class="desc" data-key="fastDesc">Estimated: 1-2 mins, Higher Fee</div>
+
+<button class="action-button" onclick="initiateBridge()" data-key="initiate">Initiate Bridge</button>
+
+  </div>  <footer>Made by rezmodi7</footer>  <script>
+    const translations = {
+      en: {
+        title: "ZenChain Bridge",
+        walletNotConnected: "Wallet Not Connected",
+        walletConnected: "Wallet Connected! ✅",
+        walletDisconnected: "Wallet Disconnected! ❌",
+        connect: "Connect Wallet",
+        disconnect: "Disconnect Wallet",
+        from: "From Chain:",
+        to: "To Chain:",
+        amount: "Amount (ZTC):",
+        method: "Transfer Method:",
+        standard: "Standard Transfer",
+        fast: "Fast Transfer",
+        standardDesc: "Estimated: 5-10 mins, Standard Fee",
+        fastDesc: "Estimated: 1-2 mins, Higher Fee",
+        initiate: "Initiate Bridge",
+        enterAmount: "Please enter a valid amount.",
+        confirmWallet: "Transfer initiated. Please confirm in your wallet. ✅"
+      },
+      fa: {
+        title: "پل زن‌چین",
+        walletNotConnected: "کیف پول متصل نیست",
+        walletConnected: "کیف پول متصل شد! ✅",
+        walletDisconnected: "اتصال کیف پول قطع شد! ❌",
+        connect: "اتصال کیف پول",
+        disconnect: "قطع اتصال",
+        from: "از شبکه:",
+        to: "به شبکه:",
+        amount: "مقدار (ZTC):",
+        method: "روش انتقال:",
+        standard: "انتقال استاندارد",
+        fast: "انتقال سریع",
+        standardDesc: "تخمین: ۵ تا ۱۰ دقیقه، کارمزد استاندارد",
+        fastDesc: "تخمین: ۱ تا ۲ دقیقه، کارمزد بالاتر",
+        initiate: "شروع انتقال",
+        enterAmount: "لطفاً یک مقدار معتبر وارد کنید.",
+        confirmWallet: "انتقال در حال انجام است. لطفاً در کیف پول تأیید کنید. ✅"
+      },
+      ar: {
+        title: "جسر زينتشين",
+        walletNotConnected: "المحفظة غير متصلة",
+        walletConnected: "تم الاتصال بالمحفظة! ✅",
+        walletDisconnected: "تم فصل الاتصال بالمحفظة! ❌",
+        connect: "اتصال المحفظة",
+        disconnect: "قطع الاتصال",
+        from: "من الشبكة:",
+        to: "إلى الشبكة:",
+        amount: "المبلغ (ZTC):",
+        method: "طريقة النقل:",
+        standard: "نقل عادي",
+        fast: "نقل سريع",
+        standardDesc: "التقدير: ٥-١٠ دقائق، رسوم قياسية",
+        fastDesc: "التقدير: ١-٢ دقائق، رسوم أعلى",
+        initiate: "بدء النقل",
+        enterAmount: "يرجى إدخال مبلغ صالح.",
+        confirmWallet: "جاري النقل. يرجى التأكيد في المحفظة. ✅"
+      },
+      zh: {
+        title: "ZenChain 桥接",
+        walletNotConnected: "钱包未连接",
+        walletConnected: "钱包已连接! ✅",
+        walletDisconnected: "钱包连接已断开! ❌",
+        connect: "连接钱包",
+        disconnect: "断开连接",
+        from: "源链:",
+        to: "目标链:",
+        amount: "数量 (ZTC):",
+        method: "传输方式:",
+        standard: "标准转移",
+        fast: "快速转移",
+        standardDesc: "预计：5-10 分钟，标准费用",
+        fastDesc: "预计：1-2 分钟，更高费用",
+        initiate: "开始桥接",
+        enterAmount: "请输入有效的数量。",
+        confirmWallet: "正在转移，请在钱包中确认。✅"
+      }
+    };
+
+    let walletConnected = false;
+
+    document.getElementById('lang').addEventListener('change', function () {
+      setLang(this.value);
+    });
+
+    function setLang(lang) {
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang][key]) {
+          if (el.tagName === 'INPUT') el.placeholder = translations[lang][key];
+          else el.innerText = translations[lang][key];
+        }
+      });
+      document.body.dir = (lang === 'fa' || lang === 'ar') ? 'rtl' : 'ltr';
+    }
+
+    setLang(document.getElementById('lang').value);
+
+    document.getElementById('connectWallet').addEventListener('click', () => {
+      const lang = document.getElementById('lang').value;
+      walletConnected = !walletConnected;
+      document.getElementById('walletStatus').innerText = walletConnected
+        ? translations[lang].walletConnected
+        : translations[lang].walletDisconnected;
+    });
+
+    function initiateBridge() {
+      const lang = document.getElementById('lang').value;
+      const amount = document.getElementById('amount').value;
+      if (!amount || parseFloat(amount) <= 0) {
+        alert(translations[lang].enterAmount);
+        return;
+      }
+      if (!walletConnected) {
+        alert(translations[lang].walletNotConnected);
+        return;
+      }
+      alert(translations[lang].confirmWallet);
+    }
+  </script></body>
+</html>
